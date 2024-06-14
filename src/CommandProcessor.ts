@@ -45,9 +45,9 @@ export default class CommandProcessor {
   }
 
   private async processCommand(command: string, args: string, userstate: tmi.ChatUserstate) {
-    const broadcaster = !!(userstate.badges?.broadcaster);
-    const mod = !!(userstate.mod);
-    const vip = !!userstate.badges?.vip;
+    // const broadcaster = !!(userstate.badges?.broadcaster);
+    // const mod = !!(userstate.mod);
+    // const vip = !!userstate.badges?.vip;
     const username = userstate['display-name']!
   
     if (command === '!task:add') {

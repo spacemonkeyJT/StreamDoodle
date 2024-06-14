@@ -68,6 +68,13 @@ export default class CommandProcessor {
       } else {
         await this.reply(username, 'No task found');
       }
+    } else if (command === '!task:cancel') {
+      const task = this.removeTask(username);
+      if (task) {
+        await this.reply(username, `Cancelled task '${task.name}'`)
+      } else {
+        await this.reply(username, 'No task found');
+      }
     }
 
     if (broadcaster || mod) {

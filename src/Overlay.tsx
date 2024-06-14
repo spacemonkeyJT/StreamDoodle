@@ -1,11 +1,5 @@
 import "./Overlay.less"
-
-export interface Task {
-  id: number;
-  username: string;
-  name: string;
-  addedDate: number;
-}
+import { Task } from "./settings";
 
 interface Props {
   tasks: Task[];

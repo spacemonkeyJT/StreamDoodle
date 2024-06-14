@@ -1,15 +1,23 @@
-import { Overlay, Task } from "./Overlay";
+import { useState } from "react";
+import { Overlay } from "./Overlay";
+import { Task } from "./settings";
+import CommandProcessor from "./CommandProcessor";
 
-function App() {
-  // const params = new URL(location.href).searchParams;
-  // const clientID = params.get('c');
-  // const authToken = params.get('t');
-  const tasks: Task[] = [{
+interface Props {
+  commandProcessor: CommandProcessor;
+}
+
+function App({ commandProcessor }: Props) {
+  const [tasks, setTasks] = useState<Task[]>([{
     id: 1,
     name: 'Do something',
     username: 'SpaceMonkeyJT',
     addedDate: Date.now(),
-  }];
+  }]);
+
+  commandProcessor.tasks = tasks;
+  commandProcessor.setTasks = setTasks;
+
   return <Overlay tasks={tasks} />
 }
 

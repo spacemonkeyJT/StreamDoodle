@@ -6,6 +6,8 @@ export default class CommandProcessor {
 
   public tasks?: Task[];
   public setTasks?: (t: Task[]) => unknown;
+  public visible?: boolean;
+  public setVisible?: (v: boolean) => unknown;
 
   constructor(
     private channel: string,
@@ -45,12 +47,14 @@ export default class CommandProcessor {
   }
 
   private async processCommand(command: string, args: string, userstate: tmi.ChatUserstate) {
-    // const broadcaster = !!(userstate.badges?.broadcaster);
-    // const mod = !!(userstate.mod);
+    const broadcaster = !!(userstate.badges?.broadcaster);
+    const mod = !!(userstate.mod);
     // const vip = !!userstate.badges?.vip;
     const username = userstate['display-name']!
   
-    if (command === '!task:add') {
+    if (command === '!task') {
+      await this.reply(username, '!task:add <name>, !task:done')
+    } else if (command === '!task:add') {
       if (args.length > 0) {
         this.addTask(args, username);
         await this.reply(username, `Added task '${args}'`);
@@ -63,6 +67,19 @@ export default class CommandProcessor {
         await this.reply(username, `Completed task '${task.name}'`)
       } else {
         await this.reply(username, 'No task found');
+      }
+    }
+
+    if (broadcaster || mod) {
+      if (command === '!task:clear') {
+        this.setTasks?.([]);
+        await this.reply(username, 'Cleared task list');
+      } else if (command === '!task:show') {
+        this.setVisible?.(true);
+        await this.reply(username, 'Task list shown');
+      } else if (command === '!task:hide') {
+        this.setVisible?.(false);
+        await this.reply(username, 'Task list hidden');
       }
     }
   }

@@ -9,11 +9,17 @@ interface Props {
 
 function App({ commandProcessor }: Props) {
   const [tasks, setTasks] = useState<Task[]>([]);
+  const [visible, setVisible] = useState(true);
 
   commandProcessor.tasks = tasks;
   commandProcessor.setTasks = setTasks;
+  commandProcessor.visible = visible;
+  commandProcessor.setVisible = setVisible;
 
-  return <Overlay tasks={tasks} />
+  if (visible) {
+    return <Overlay tasks={tasks} />
+  }
+  return null
 }
 
 export default App

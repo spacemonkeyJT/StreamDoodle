@@ -8,12 +8,7 @@ interface Props {
 }
 
 function App({ commandProcessor }: Props) {
-  const [tasks, setTasks] = useState<Task[]>([{
-    id: 1,
-    name: 'Do something',
-    username: 'SpaceMonkeyJT',
-    addedDate: Date.now(),
-  }]);
+  const [tasks, setTasks] = useState<Task[]>([]);
 
   commandProcessor.tasks = tasks;
   commandProcessor.setTasks = setTasks;

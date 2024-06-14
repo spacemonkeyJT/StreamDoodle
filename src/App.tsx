@@ -19,6 +19,7 @@ function App({ commandProcessor }: Props) {
   if (visible) {
     return <Overlay tasks={tasks} />
   }
+
   return null
 }
 

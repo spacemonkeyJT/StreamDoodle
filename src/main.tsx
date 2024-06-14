@@ -6,20 +6,19 @@ import CommandProcessor from './CommandProcessor.ts'
 
 async function main() {
   const params = new URL(location.href).searchParams;
-  const channel = params.get('c');
-  const username = params.get('u');
-  const authToken = params.get('t');
+  const channel = params.get('c') ?? undefined;
+  const username = params.get('u') ?? undefined;
+  const authToken = params.get('t') ?? undefined;
   
-  if (channel && username && authToken) {
-    const commandProcessor = new CommandProcessor(channel, username, authToken);
-    await commandProcessor.connect();
-    
-    ReactDOM.createRoot(document.getElementById('root')!).render(
-      <React.StrictMode>
-        <App commandProcessor={commandProcessor} />
-      </React.StrictMode>,
-    )
-  }
+  const commandProcessor =  new CommandProcessor(channel, username, authToken);
+  await commandProcessor.connect();
+  
+  ReactDOM.createRoot(document.getElementById('root')!).render(
+    <React.StrictMode>
+      {commandProcessor.error}
+      {!commandProcessor.error && <App commandProcessor={commandProcessor} />}
+    </React.StrictMode>,
+  )
 }
 
 main().catch(console.error);

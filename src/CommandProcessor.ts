@@ -2,48 +2,64 @@ import tmi from 'tmi.js';
 import { Task } from './settings';
 
 export default class CommandProcessor {
-  private chat: tmi.Client;
+  private chat?: tmi.Client;
 
   public tasks?: Task[];
   public setTasks?: (t: Task[]) => unknown;
   public visible?: boolean;
   public setVisible?: (v: boolean) => unknown;
+  public error = '';
 
   constructor(
-    private channel: string,
-    private username: string,
-    private authToken: string)
+    private channel?: string,
+    private username?: string,
+    private authToken?: string)
   {
-    this.chat = new tmi.client({
-      options: {
-        debug: true
-      },
-      identity: {
-        username: this.username,
-        password: this.authToken
-      },
-      channels: [this.channel]
-    });
+    if (!channel) {
+      this.error = 'Missing channel name'
+    } else if (!username) {
+      this.error = 'Missing username'
+    } else if (!authToken) {
+      this.error = 'Missing auth token'
+    } else {
+      this.chat = new tmi.client({
+        options: {
+          debug: true
+        },
+        identity: {
+          username: this.username,
+          password: this.authToken
+        },
+        channels: [this.channel!]
+      });
+    }
   }
 
   public async connect() {
-    console.log(`Connecting to channel ${this.channel} as ${this.username}`);
-    await this.chat.connect();
-    console.log('Connected successfully');
-
-    this.chat.on('message', async (_channel, userstate, message, self) => {
-      if (self) return;
+    if (this.chat) {
+      console.log(`Connecting to channel ${this.channel} as ${this.username}`);
       try {
-        const command = message.trim();
-        if (command.startsWith('!')) {
-          const commandName = command.split(' ')[0].toLowerCase();
-          const args = command.substring(commandName.length + 1).trim();
-          await this.processCommand(commandName, args, userstate);
-        }
-      } catch (error) {
-        console.error(error);
+        await this.chat.connect();
+      } catch (ex) {
+        this.error = `${ex}`;
+        return;
       }
-    });
+      console.log('Connected successfully');
+
+      this.chat.on('message', async (_channel, userstate, message, self) => {
+        if (self) return;
+        try {
+          const command = message.trim();
+          if (command.startsWith('!')) {
+            const commandName = command.split(' ')[0].toLowerCase();
+            const args = command.substring(commandName.length + 1).trim();
+            await this.processCommand(commandName, args, userstate);
+          }
+        } catch (error) {
+          console.error(error);
+        }
+      });
+    }
   }
 
   private async processCommand(command: string, args: string, userstate: tmi.ChatUserstate) {
@@ -92,7 +108,7 @@ export default class CommandProcessor {
   }
 
   private async say(message: string) {
-    await this.chat.say(this.channel, message);
+    await this.chat!.say(this.channel!, message);
   }
 
   private async reply(username: string, message: string) {

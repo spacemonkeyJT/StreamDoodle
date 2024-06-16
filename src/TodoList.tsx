@@ -1,11 +1,11 @@
-import "./Overlay.less"
+import "./TodoList.less"
 import { Task } from "./settings";
 
 interface Props {
   tasks: Task[];
 }
 
-export function Overlay({ tasks }: Props) {
+export function TodoList({ tasks }: Props) {
   if (tasks.length > 0) {
     return (
       <div className="todo-list">

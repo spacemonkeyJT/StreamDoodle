@@ -30,13 +30,10 @@ Clear the task list.
 
 ## Installation
 
-In OBS, add a new browser source:
+In OBS or StreamLabs Desktop, create a new browser source:
 
 * URL: As provided
-* Width: 600
-* Height: 500
+* Width & Height: Set to your stream resolution, e.g. 1920x1080
 * Refresh browser when scene becomes active (checked)
 
-If using StreamLabs desktop, the steps should be similar.
-
-To customize the size of the overlay, don't resize the source manually otherwise it will stretch and distort it. Instead, edit the properties of the source and set the Width/Height, then drag it to where you want it in the scene.
+Add the browser source to each scene somewhere near the top so it appears on top of other elements.

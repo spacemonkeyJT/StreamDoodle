@@ -1,7 +1,7 @@
 import { useState } from "react";
-import { Overlay } from "./Overlay";
 import { Task } from "./settings";
 import CommandProcessor from "./CommandProcessor";
+import { TodoList } from "./TodoList";
 
 interface Props {
   commandProcessor: CommandProcessor;
@@ -17,7 +17,7 @@ function App({ commandProcessor }: Props) {
   commandProcessor.setVisible = setVisible;
 
   if (visible) {
-    return <Overlay tasks={tasks} />
+    return <TodoList tasks={tasks} />
   }
 
   return null

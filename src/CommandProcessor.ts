@@ -1,5 +1,5 @@
 import tmi from 'tmi.js';
-import { Task } from './settings';
+import { Task, saveSettings, settings } from './settings';
 
 export default class CommandProcessor {
   private chat?: tmi.Client;
@@ -46,8 +46,7 @@ export default class CommandProcessor {
       }
       console.log('Connected successfully');
 
-      this.chat.on('message', async (_channel, userstate, message, self) => {
-        if (self) return;
+      this.chat.on('message', async (_channel, userstate, message, _self) => {
         try {
           const command = message.trim();
           if (command.startsWith('!')) {
@@ -115,6 +114,14 @@ export default class CommandProcessor {
     await this.say(`@${username} ${message}`);
   }
 
+  private saveTasks(tasks: Task[]) {
+    if (this.setTasks) {
+      settings.tasks = tasks;
+      saveSettings();
+      this.setTasks(tasks);
+    }
+  }
+
   private addTask(name: string, username: string) {
     if (this.tasks && this.setTasks) {
       let id = 0;
@@ -123,7 +130,7 @@ export default class CommandProcessor {
           id = task.id + 1;
         }
       }
-      this.setTasks([
+      this.saveTasks([
         ...this.tasks.filter(task => task.username !== username),
         {
           id,
@@ -139,7 +146,7 @@ export default class CommandProcessor {
     if (this.tasks && this.setTasks) {
       const task = this.tasks.find(r => r.username === username);
       if (task) {
-        this.setTasks([...this.tasks.filter(r => r.username !== username)]);
+        this.saveTasks([...this.tasks.filter(r => r.username !== username)]);
         return task;        
       }
     }

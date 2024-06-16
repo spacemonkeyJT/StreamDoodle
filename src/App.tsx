@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { Task } from "./settings";
+import { Task, settings } from "./settings";
 import CommandProcessor from "./CommandProcessor";
 import { TodoList } from "./TodoList";
 
@@ -8,7 +8,7 @@ interface Props {
 }
 
 function App({ commandProcessor }: Props) {
-  const [tasks, setTasks] = useState<Task[]>([]);
+  const [tasks, setTasks] = useState<Task[]>(settings.tasks);
   const [visible, setVisible] = useState(true);
 
   commandProcessor.tasks = tasks;

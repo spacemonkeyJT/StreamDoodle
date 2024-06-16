@@ -1,13 +1,9 @@
 import tmi from 'tmi.js';
-import { Task, saveSettings, settings } from './settings';
+import { Task, updateSettings } from './settings';
 
 export default class CommandProcessor {
   private chat?: tmi.Client;
 
-  public tasks?: Task[];
-  public setTasks?: (t: Task[]) => unknown;
-  public visible?: boolean;
-  public setVisible?: (v: boolean) => unknown;
   public error = '';
 
   constructor(
@@ -94,14 +90,17 @@ export default class CommandProcessor {
 
     if (broadcaster || mod) {
       if (command === '!task:clear') {
-        this.setTasks?.([]);
+        updateSettings(s => s.tasks = []);
         await this.reply(username, 'Cleared task list');
       } else if (command === '!task:show') {
-        this.setVisible?.(true);
+        updateSettings(s => s.tasksVisible = true);
         await this.reply(username, 'Task list shown');
       } else if (command === '!task:hide') {
-        this.setVisible?.(false);
+        updateSettings(s => s.tasksVisible = false);
         await this.reply(username, 'Task list hidden');
+      // } else if (command === '!task:pos') {
+      //   const [x,y,w,h] = args.split(' ');
+      //   this.setTasksPos(x, w, h, h);
       }
     }
   }
@@ -114,42 +113,34 @@ export default class CommandProcessor {
     await this.say(`@${username} ${message}`);
   }
 
-  private saveTasks(tasks: Task[]) {
-    if (this.setTasks) {
-      settings.tasks = tasks;
-      saveSettings();
-      this.setTasks(tasks);
-    }
-  }
-
   private addTask(name: string, username: string) {
-    if (this.tasks && this.setTasks) {
+    updateSettings(settings => {
       let id = 0;
-      for (const task of this.tasks) {
+      for (const task of settings.tasks) {
         if (task.id >= id) {
           id = task.id + 1;
         }
       }
-      this.saveTasks([
-        ...this.tasks.filter(task => task.username !== username),
+      settings.tasks = [
+        ...settings.tasks.filter(task => task.username !== username),
         {
           id,
           addedDate: Date.now(),
           name,
           username
         }
-      ])
-    }
+      ]
+    })
   }
 
   private removeTask(username: string) {
-    if (this.tasks && this.setTasks) {
-      const task = this.tasks.find(r => r.username === username);
+    let task: Task | undefined
+    updateSettings(settings => {
+      task = settings.tasks.find(r => r.username === username);
       if (task) {
-        this.saveTasks([...this.tasks.filter(r => r.username !== username)]);
-        return task;        
+        settings.tasks = [...settings.tasks.filter(r => r.username !== username)]
       }
-    }
-    return undefined;
+    })
+    return task
   }
 }

@@ -7,10 +7,12 @@ export interface Task {
 
 export interface Settings {
   tasks: Task[]
+  tasksVisible: boolean
 }
 
 const defaultSettings: Settings = {
-  tasks: []
+  tasks: [],
+  tasksVisible: true,
 }
 
 const SettingsStorageID = 'streamdoodle-settings'
@@ -26,8 +28,21 @@ function loadSettings(): Settings {
   return defaultSettings
 }
 
-export const settings = loadSettings()
+let _settings = loadSettings();
 
-export function saveSettings() {
-  localStorage.setItem(SettingsStorageID, JSON.stringify(settings))
+export function getSettings() {
+  return _settings;
+}
+
+let updateSettingsState: (s: Settings) => unknown = () => {}
+
+export function setUpdateSettingsState(_updateSettingsState: (s: Settings) => unknown) {
+  updateSettingsState = _updateSettingsState;
+}
+
+export function updateSettings(update: (s: Settings) => unknown) {
+  update(_settings);
+  _settings = { ..._settings };
+  localStorage.setItem(SettingsStorageID, JSON.stringify(_settings))
+  updateSettingsState(_settings)
 }

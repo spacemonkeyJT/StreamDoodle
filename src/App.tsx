@@ -1,23 +1,14 @@
 import { useState } from "react";
-import { Task, settings } from "./settings";
-import CommandProcessor from "./CommandProcessor";
 import { TodoList } from "./TodoList";
+import { getSettings, setUpdateSettingsState } from "./settings";
 
-interface Props {
-  commandProcessor: CommandProcessor;
-}
+function App() {
+  const [settings, setSettings] = useState(getSettings());
 
-function App({ commandProcessor }: Props) {
-  const [tasks, setTasks] = useState<Task[]>(settings.tasks);
-  const [visible, setVisible] = useState(true);
+  setUpdateSettingsState(setSettings);
 
-  commandProcessor.tasks = tasks;
-  commandProcessor.setTasks = setTasks;
-  commandProcessor.visible = visible;
-  commandProcessor.setVisible = setVisible;
-
-  if (visible) {
-    return <TodoList tasks={tasks} />
+  if (settings.tasksVisible) {
+    return <TodoList tasks={settings.tasks} />
   }
 
   return null

@@ -16,7 +16,7 @@ async function main() {
   ReactDOM.createRoot(document.getElementById('root')!).render(
     <React.StrictMode>
       {commandProcessor.error}
-      {!commandProcessor.error && <App commandProcessor={commandProcessor} />}
+      <App />
     </React.StrictMode>,
   )
 }

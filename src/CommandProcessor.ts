@@ -1,5 +1,6 @@
 import tmi from 'tmi.js';
 import { Task, getSettings, updateSettings } from './settings';
+import { State } from './state';
 
 interface CommandOptions {
   command: string
@@ -13,6 +14,8 @@ interface CommandOptions {
 export default class CommandProcessor {
   private chat?: tmi.Client;
 
+  public state: State = { avatars: [] };
+  public setState: (s: State) => unknown = (_s => {});
   public error = '';
 
   constructor(
@@ -133,12 +136,25 @@ export default class CommandProcessor {
   }
 
   private async processBounceCommands(opts: CommandOptions) {
-    const { command } = opts;
+    const { command, username, mod } = opts;
+    const { bounceEnabled } = getSettings();
+
+    if (command === '!bounce') {
+      this.updateState(s => s.avatars.push({ username }))
+    }
     
-    if (command === '!bounce:enable') {
-      updateSettings(s => s.bounceEnabled = true);
-    } else if (command === '!bounce:disable') {
-      updateSettings(s => s.bounceEnabled = false);
+    if (mod) {
+      if (bounceEnabled) {
+        if (command === '!bounce:disable') {
+          updateSettings(s => s.bounceEnabled = false);
+          await this.reply(username, 'Bounce disabled');
+        }
+      } else {
+        if (command === '!bounce:enable') {
+          updateSettings(s => s.bounceEnabled = true);
+          await this.reply(username, 'Bounce enabled');
+        }
+      }
     }
   }
 
@@ -179,5 +195,10 @@ export default class CommandProcessor {
       }
     })
     return task
+  }
+
+  private updateState(update: (s: State) => unknown) {
+    update(this.state);
+    this.setState({ ...this.state });
   }
 }

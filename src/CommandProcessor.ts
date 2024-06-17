@@ -1,5 +1,14 @@
 import tmi from 'tmi.js';
-import { Task, updateSettings } from './settings';
+import { Task, getSettings, updateSettings } from './settings';
+
+interface CommandOptions {
+  command: string
+  args: string
+  username: string
+  mod: boolean
+  broadcaster: boolean
+  vip: boolean
+}
 
 export default class CommandProcessor {
   private chat?: tmi.Client;
@@ -48,7 +57,16 @@ export default class CommandProcessor {
           if (command.startsWith('!')) {
             const commandName = command.split(' ')[0].toLowerCase();
             const args = command.substring(commandName.length + 1).trim();
-            await this.processCommand(commandName, args, userstate);
+            const broadcaster = !!(userstate.badges?.broadcaster);
+            const opts: CommandOptions = {
+              command: commandName,
+              args,
+              broadcaster,
+              mod: broadcaster || !!(userstate.mod),
+              vip: !!userstate.badges?.vip,
+              username: userstate['display-name']!
+            };
+            await this.processCommand(opts);
           }
         } catch (error) {
           console.error(error);
@@ -57,51 +75,70 @@ export default class CommandProcessor {
     }
   }
 
-  private async processCommand(command: string, args: string, userstate: tmi.ChatUserstate) {
-    const broadcaster = !!(userstate.badges?.broadcaster);
-    const mod = !!(userstate.mod);
-    // const vip = !!userstate.badges?.vip;
-    const username = userstate['display-name']!
-  
-    if (command === '!task') {
-      await this.reply(username, '!task:add <name>, !task:done')
-    } else if (command === '!task:add') {
-      if (args.length > 0) {
-        this.addTask(args, username);
-        await this.reply(username, `Added task '${args}'`);
-      } else {
-        await this.reply(username, 'Missing task name');
-      }
-    } else if (command === '!task:done') {
-      const task = this.removeTask(username);
-      if (task) {
-        await this.reply(username, `Completed task '${task.name}'`)
-      } else {
-        await this.reply(username, 'No task found');
-      }
-    } else if (command === '!task:cancel') {
-      const task = this.removeTask(username);
-      if (task) {
-        await this.reply(username, `Cancelled task '${task.name}'`)
-      } else {
-        await this.reply(username, 'No task found');
+  private async processCommand(opts: CommandOptions) {
+    await this.processTaskCommands(opts);
+    await this.processBounceCommands(opts);
+  }
+
+  private async processTaskCommands(opts: CommandOptions) {
+    const { command, username, args, mod } = opts;
+    const { tasksEnabled } = getSettings();
+    
+    if (tasksEnabled) {
+      if (command === '!task') {
+        await this.reply(username, '!task:add <name>, !task:done')
+      } else if (command === '!task:add') {
+        if (args.length > 0) {
+          this.addTask(args, username);
+          await this.reply(username, `Added task '${args}'`);
+        } else {
+          await this.reply(username, 'Missing task name');
+        }
+      } else if (command === '!task:done') {
+        const task = this.removeTask(username);
+        if (task) {
+          await this.reply(username, `Completed task '${task.name}'`)
+        } else {
+          await this.reply(username, 'No task found');
+        }
+      } else if (command === '!task:cancel') {
+        const task = this.removeTask(username);
+        if (task) {
+          await this.reply(username, `Cancelled task '${task.name}'`)
+        } else {
+          await this.reply(username, 'No task found');
+        }
       }
     }
 
-    if (broadcaster || mod) {
-      if (command === '!task:clear') {
-        updateSettings(s => s.tasks = []);
-        await this.reply(username, 'Cleared task list');
-      } else if (command === '!task:show') {
-        updateSettings(s => s.tasksVisible = true);
-        await this.reply(username, 'Task list shown');
-      } else if (command === '!task:hide') {
-        updateSettings(s => s.tasksVisible = false);
-        await this.reply(username, 'Task list hidden');
-      // } else if (command === '!task:pos') {
-      //   const [x,y,w,h] = args.split(' ');
-      //   this.setTasksPos(x, w, h, h);
+    if (mod) {
+      if (tasksEnabled) {
+        if (command === '!task:clear') {
+          updateSettings(s => s.tasks = []);
+          await this.reply(username, 'Cleared task list');
+        } else if (command === '!task:disable') {
+          updateSettings(s => s.tasksEnabled = false);
+          await this.reply(username, 'Task list disabled');
+        } else if (command === '!task:pos') {
+          const [x,y,w,h] = args.split(' ').map(s => parseInt(s))
+          updateSettings(s => s.tasksBounds = { x, y, w, h });
+        }
+      } else {
+        if (command === '!task:enable') {
+          updateSettings(s => s.tasksEnabled = true);
+          await this.reply(username, 'Task list enabled');
+        }
       }
+    }
+  }
+
+  private async processBounceCommands(opts: CommandOptions) {
+    const { command } = opts;
+    
+    if (command === '!bounce:enable') {
+      updateSettings(s => s.bounceEnabled = true);
+    } else if (command === '!bounce:disable') {
+      updateSettings(s => s.bounceEnabled = false);
     }
   }
 

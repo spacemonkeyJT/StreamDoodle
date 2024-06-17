@@ -7,8 +7,8 @@ function App() {
 
   setUpdateSettingsState(setSettings);
 
-  if (settings.tasksVisible) {
-    return <TodoList tasks={settings.tasks} />
+  if (settings.tasksEnabled) {
+    return <TodoList tasks={settings.tasks} bounds={settings.tasksBounds} />
   }
 
   return null

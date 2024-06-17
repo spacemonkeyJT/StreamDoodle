@@ -16,13 +16,13 @@ Mark the task done for the current user.
 
 Cancel the task for the current user.
 
-### `!task:show` (Moderator only)
+### `!task:enable` (Moderator only)
 
-Show the task list.
+Enable the task list.
 
 ### `!task:hide` (Moderator only)
 
-Hide the task list.
+Disable the task list.
 
 ### `!task:clear` (Moderator only)
 

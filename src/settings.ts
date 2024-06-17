@@ -5,14 +5,30 @@ export interface Task {
   addedDate: number;
 }
 
+export interface Bounds {
+  x: number
+  y: number
+  w: number
+  h: number
+}
+
 export interface Settings {
   tasks: Task[]
-  tasksVisible: boolean
+  tasksEnabled: boolean
+  tasksBounds: Bounds
+  bounceEnabled: boolean
 }
 
 const defaultSettings: Settings = {
   tasks: [],
-  tasksVisible: true,
+  tasksEnabled: false,
+  tasksBounds: {
+    x: 100,
+    y: 100,
+    w: 500,
+    h: 600,
+  },
+  bounceEnabled: false,
 }
 
 const SettingsStorageID = 'streamdoodle-settings'

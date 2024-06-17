@@ -1,13 +1,14 @@
 import "./TodoList.less"
-import { Task } from "./settings";
+import { Bounds, Task } from "./settings";
 
 interface Props {
-  tasks: Task[];
+  tasks: Task[]
+  bounds: Bounds
 }
 
-export function TodoList({ tasks }: Props) {
+export function TodoList({ tasks, bounds }: Props) {
   return (
-    <div className="todo-list">
+    <div className="todo-list" style={{ left: bounds.x, top: bounds.y, width: bounds.w, height: bounds.h }}>
       {tasks
         .sort((a, b) => a.addedDate - b.addedDate)
         .map(t => (

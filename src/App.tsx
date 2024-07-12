@@ -1,24 +1,15 @@
-import { useState } from "react";
-import { TodoList } from "./TodoList";
-import { getSettings, setUpdateSettingsState } from "./settings";
-import { State } from "./state";
-import CommandProcessor from "./CommandProcessor";
+import { useEffect } from "react";
+import CommandProcessor from "./CommandProcessor"
 
-interface Props {
-  commandProcessor: CommandProcessor
-}
+function App() {
+  const cp = CommandProcessor.inst;
 
-function App({ commandProcessor }: Props) {
-  const [settings, setSettings] = useState(getSettings());
-  const [state, setState] = useState<State>({ avatars: [] })
-
-  commandProcessor.state = state;
-  commandProcessor.setState = setState;
-
-  setUpdateSettingsState(setSettings);
+  useEffect(() => cp.onCommand.subscribe((opts) => {
+    console.log(opts.command);
+  }));
 
   return <>
-    {settings.tasksEnabled && <TodoList tasks={settings.tasks} bounds={settings.tasksBounds} />}
+    Test
   </>
 }
 

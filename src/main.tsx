@@ -10,13 +10,13 @@ async function main() {
   const username = params.get('u') ?? undefined;
   const authToken = params.get('t') ?? undefined;
   
-  const commandProcessor =  new CommandProcessor(channel, username, authToken);
-  await commandProcessor.connect();
+  const cp = CommandProcessor.inst = new CommandProcessor(channel, username, authToken);
+  await cp.connect();
   
   ReactDOM.createRoot(document.getElementById('root')!).render(
     <React.StrictMode>
-      {commandProcessor.error}
-      <App commandProcessor={commandProcessor} />
+      {cp.error}
+      <App />
     </React.StrictMode>,
   )
 }

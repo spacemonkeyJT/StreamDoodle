@@ -1,5 +1,6 @@
 import { useEffect } from "react";
 import CommandProcessor from "./CommandProcessor"
+import ImageRain from "./ImageRain";
 
 function App() {
   const cp = CommandProcessor.inst;
@@ -9,7 +10,7 @@ function App() {
   }));
 
   return <>
-    Test
+    <ImageRain />
   </>
 }
 

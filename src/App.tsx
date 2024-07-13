@@ -1,19 +1,20 @@
 import { useEffect } from "react";
 import CommandProcessor from "./CommandProcessor"
 import ImageRain from "./ImageRain";
+import UserDrop from "./UserDrop";
 
 const merchImages = [
-  'beanie_red.png',
-  'beanie_white.png',
-  'emote_stickers.png',
-  'holo_stickers.png',
-  'mug_black.png',
-  'shirt_cardinal.png',
-  'shirt_gold.png',
-  'shirt_purple.png',
-  'shirt_red.png',
-  'shirt_royal.png',
-  'shirt_sky.png',
+  'kmrkle/merch/beanie_red.png',
+  'kmrkle/merch/beanie_white.png',
+  'kmrkle/merch/emote_stickers.png',
+  'kmrkle/merch/holo_stickers.png',
+  'kmrkle/merch/mug_black.png',
+  'kmrkle/merch/shirt_cardinal.png',
+  'kmrkle/merch/shirt_gold.png',
+  'kmrkle/merch/shirt_purple.png',
+  'kmrkle/merch/shirt_red.png',
+  'kmrkle/merch/shirt_royal.png',
+  'kmrkle/merch/shirt_sky.png',
 ]
 
 function App() {
@@ -24,7 +25,9 @@ function App() {
   }));
 
   return <>
-    <ImageRain imageNames={merchImages} />
+    <img src="lastofus.webp" style={{ position: 'absolute', width: 1920, zIndex: -1 }} />
+    {/* <ImageRain imageNames={merchImages} /> */}
+    <UserDrop />
   </>
 }
 

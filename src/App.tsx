@@ -2,6 +2,20 @@ import { useEffect } from "react";
 import CommandProcessor from "./CommandProcessor"
 import ImageRain from "./ImageRain";
 
+const merchImages = [
+  'beanie_red.png',
+  'beanie_white.png',
+  'emote_stickers.png',
+  'holo_stickers.png',
+  'mug_black.png',
+  'shirt_cardinal.png',
+  'shirt_gold.png',
+  'shirt_purple.png',
+  'shirt_red.png',
+  'shirt_royal.png',
+  'shirt_sky.png',
+]
+
 function App() {
   const cp = CommandProcessor.inst;
 
@@ -10,7 +24,7 @@ function App() {
   }));
 
   return <>
-    <ImageRain />
+    <ImageRain imageNames={merchImages} />
   </>
 }
 

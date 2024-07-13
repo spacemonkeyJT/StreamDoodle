@@ -8,9 +8,20 @@ interface ImageInfo {
   vy: number;
   rot: number;
   vrot: number;
+  name: string;
 }
 
-export default function ImageRain() {
+interface Props {
+  imageNames: string[];
+  spawnInterval?: number;
+  sizeMin?: number;
+  sizeMax?: number;
+  rotMax?: number;
+  fallRatio?: number;
+  driftRatio?: number;
+}
+
+export default function ImageRain(props: Props) {
   const [images, setImages] = useState<ImageInfo[]>([]);
 
   const requestRef = useRef<number>();
@@ -38,26 +49,34 @@ export default function ImageRain() {
     return () => cancelAnimationFrame(requestRef.current!);
   }, []);
 
+  const sizeMin = props.sizeMin ?? 50;
+  const sizeMax = props.sizeMax ?? 200;
+  const rotMax = props.rotMax ?? 50;
+  const spawnInterval = props.spawnInterval ?? 500;
+  const fallRatio = props.fallRatio ?? 1.0;
+  const driftRatio = props.driftRatio ?? 1.0;
+
   useEffect(() => {
     const interval = setInterval(() => {
-      const size = Math.random() * 150 + 50;
+      const size = Math.random() * (sizeMax - sizeMin) + sizeMin;
       const img: ImageInfo = {
         size,
         x: Math.random() * window.innerWidth,
         y: -size,
-        vx: Math.random() * size - size / 2,
-        vy: size * 1,
+        vx: (Math.random() * size - size / 2) * driftRatio,
+        vy: size * fallRatio,
         rot: 0,
-        vrot: Math.random() * 100 - 50
+        vrot: Math.random() * rotMax * 2 - rotMax,
+        name: props.imageNames[Math.floor(Math.random() * props.imageNames.length)],
       }
       setImages(currentImages => [...currentImages, img]);
-    }, 500);
+    }, spawnInterval);
     return () => clearInterval(interval);
   }, [])
 
   return <>
     {images.map((info, idx) => (
-      <img src="bapshirt_red.webp" key={idx} width={info.size} style={{ left: info.x, top: info.y, position: 'absolute', transform: `rotate(${info.rot}deg)` }} />
+      <img src={info.name} key={idx} width={info.size} style={{ left: info.x, top: info.y, position: 'absolute', transform: `rotate(${info.rot}deg)` }} />
     ))}
   </>
 }

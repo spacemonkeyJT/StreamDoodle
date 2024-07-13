@@ -9,8 +9,6 @@ interface ImageInfo {
 }
 
 export default function ImageRain() {
-  const [count, setCount] = useState(0);
-
   const [images, setImages] = useState<ImageInfo[]>([]);
 
   const requestRef = useRef<number>();
@@ -25,10 +23,8 @@ export default function ImageRain() {
           image.x += image.vx * deltaTime / 1000;
           image.y += image.vy * deltaTime / 1000;
         }
-        return currentImages;
+        return currentImages.filter(r => r.y < window.innerHeight);
       });
-
-      setCount(oldCount => oldCount + 1);
     }
     previousTimeRef.current = time;
     requestRef.current = requestAnimationFrame(animate);
@@ -37,7 +33,7 @@ export default function ImageRain() {
   useEffect(() => {
     requestRef.current = requestAnimationFrame(animate);
     return () => cancelAnimationFrame(requestRef.current!);
-  }, []); // Make sure the effect runs only once
+  }, []);
 
   useEffect(() => {
     const interval = setInterval(() => {
@@ -49,10 +45,10 @@ export default function ImageRain() {
         vx: Math.random() * size - size / 2,
         vy: size * 1,
       }
-      setImages([...images, img].filter(r => r.y < window.innerHeight));
+      setImages(currentImages => [...currentImages, img]);
     }, 500);
     return () => clearInterval(interval);
-  }, [images])
+  }, [])
 
   return <>
     {images.map((info, idx) => (

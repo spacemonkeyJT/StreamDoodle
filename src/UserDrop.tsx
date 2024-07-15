@@ -1,4 +1,6 @@
 import { useEffect, useRef, useState } from "react";
+import CommandProcessor from "./CommandProcessor";
+import { getUserInfo } from "./twitch";
 
 interface UserInfo {
   x: number;
@@ -13,9 +15,10 @@ interface UserInfo {
 }
 
 const gravity = 200;
-const bounciness = 0.5;
+const bounciness = 0.8;
 const screenMarginBottom = 20;
 const horizSpeed = 300;
+const picSize = 70;
 
 export default function UserDrop() {
   const [users, setUsers] = useState<UserInfo[]>([]);
@@ -38,7 +41,7 @@ export default function UserDrop() {
           if (user.y >= bottom) {
             user.vy = -user.vy * bounciness;
             user.vx = user.vx * bounciness;
-            user.y = bottom - 1;
+            user.y = bottom;
           }
           // Left
           const left = user.size;
@@ -72,26 +75,57 @@ export default function UserDrop() {
     return () => cancelAnimationFrame(requestRef.current!);
   }, []);
 
-  function doDrop(username: string) {
-    const user: UserInfo = {
-      username,
-      imageName: 'kmrkle/avatar.png',
-      y: -70,
-      x: Math.random() * 1920 - 70,
-      rot: 0,
-      vrot: 0,
-      vx: Math.random() * horizSpeed * 2 - horizSpeed,
-      vy: 0,
-      size: 70,
+  async function doDrop(username: string) {
+    const profilePic = (await getUserInfo(username))?.profile_image_url;
+
+    if (profilePic) {
+      setUsers(users => {
+        if (!users.find(r => r.username === username)) {
+          const user: UserInfo = {
+            username,
+            imageName: profilePic,
+            y: -picSize,
+            x: Math.random() * window.innerWidth - picSize,
+            rot: 0,
+            vrot: 0,
+            vx: Math.random() * horizSpeed * 2 - horizSpeed,
+            vy: 0,
+            size: picSize,
+          }
+
+          return [...users, user];
+        }
+        return users;
+      });
     }
-    setUsers([...users, user]);
   }
 
+  const cp = CommandProcessor.inst;
+
+  useEffect(() => cp.onMessage.subscribe(async (userstate, message) => {
+    doDrop(userstate["display-name"]!);
+  }), []);
+
   return <>
-    <button onClick={() => doDrop('kmrkle')}>test</button>
+    <button onClick={() => doDrop('SpaceMonkeyJT')}>test</button>
     {users.map((info, idx) => <div key={idx}>
-      <img src={info.imageName} key={idx} style={{ left: info.x, top: info.y, position: 'absolute', transform: `rotate(${info.rot}deg)` }} width={info.size} />
-      <label style={{ left: info.x + 35 - 50, top: info.y + 70, position: 'absolute', color: '#fff', textAlign: 'center', width: 100 }}>{info.username}</label>
+      <img src={info.imageName} key={idx} style={{
+        left: info.x,
+        top: info.y,
+        position: 'absolute',
+        transform: `rotate(${info.rot}deg)`,
+        borderRadius: picSize / 2,
+      }} width={info.size} />
+
+      <label style={{
+        left: info.x + picSize / 2 - 100,
+        top: info.y + picSize,
+        position: 'absolute',
+        color: '#fff',
+        textAlign: 'center',
+        width: 200 }}>
+        {info.username}
+      </label>
     </div>)}
   </>
 }

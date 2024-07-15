@@ -1,5 +1,3 @@
-import { useEffect } from "react";
-import CommandProcessor from "./CommandProcessor"
 import ImageRain from "./ImageRain";
 import UserDrop from "./UserDrop";
 
@@ -18,14 +16,8 @@ const merchImages = [
 ]
 
 function App() {
-  const cp = CommandProcessor.inst;
-
-  useEffect(() => cp.onCommand.subscribe((opts) => {
-    console.log(opts.command);
-  }));
-
   return <>
-    <img src="lastofus.webp" style={{ position: 'absolute', width: 1920, zIndex: -1 }} />
+    <img src="lastofus.webp" style={{ position: 'absolute', width: window.innerWidth, zIndex: -1 }} />
     {/* <ImageRain imageNames={merchImages} /> */}
     <UserDrop />
   </>

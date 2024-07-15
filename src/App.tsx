@@ -17,7 +17,7 @@ const merchImages = [
 
 function App() {
   return <>
-    <img src="lastofus.webp" style={{ position: 'absolute', width: window.innerWidth, zIndex: -1 }} />
+    {/* <img src="lastofus.webp" style={{ position: 'absolute', width: window.innerWidth, zIndex: -1 }} /> */}
     {/* <ImageRain imageNames={merchImages} /> */}
     <UserDrop />
   </>

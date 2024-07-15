@@ -19,6 +19,8 @@ const bounciness = 0.8;
 const screenMarginBottom = 20;
 const horizSpeed = 300;
 const picSize = 70;
+const picSizeSq = picSize * picSize;
+const collideForce = 100000;
 
 export default function UserDrop() {
   const [users, setUsers] = useState<UserInfo[]>([]);
@@ -44,7 +46,7 @@ export default function UserDrop() {
             user.y = bottom;
           }
           // Left
-          const left = user.size;
+          const left = 0;
           if (user.x < left) {
             user.vx = -user.vx * bounciness;
             user.x = left + 1;
@@ -54,6 +56,24 @@ export default function UserDrop() {
           if (user.x > right) {
             user.vx = -user.vx * bounciness;
             user.x = right - 1;
+          }
+
+          // Collide with other users
+          for (const other of currentUsers) {
+            if (other !== user) {
+              const ax = user.x - other.x;
+              const ay = user.y - other.y;
+              const dx = Math.abs(ax);
+              const dy = Math.abs(ay);
+              const ds = dx * dx + dy * dy;
+              if (ds < picSizeSq) {
+                const f = deltaTime / 1000 * collideForce;
+                user.vx = user.vx + ax / ds * f;
+                user.vy = user.vy + ay / ds * f;
+                other.vx = other.vx - ax / ds * f;
+                other.vy = other.vy - ay / ds * f; 
+              }
+            }
           }
 
           // Update position based on velocity
@@ -80,7 +100,7 @@ export default function UserDrop() {
 
     if (profilePic) {
       setUsers(users => {
-        if (!users.find(r => r.username === username)) {
+        //if (!users.find(r => r.username === username)) {
           const user: UserInfo = {
             username,
             imageName: profilePic,
@@ -94,8 +114,8 @@ export default function UserDrop() {
           }
 
           return [...users, user];
-        }
-        return users;
+        // }
+        // return users;
       });
     }
   }
@@ -107,7 +127,7 @@ export default function UserDrop() {
   }), []);
 
   return <>
-    <button onClick={() => doDrop('SpaceMonkeyJT')}>test</button>
+    <button onClick={() => doDrop('kmrkle')}>test</button>
     {users.map((info, idx) => <div key={idx}>
       <img src={info.imageName} key={idx} style={{
         left: info.x,

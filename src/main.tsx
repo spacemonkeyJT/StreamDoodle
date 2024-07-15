@@ -11,8 +11,6 @@ async function main() {
   const username = params.get('u') ?? undefined;
   const authToken = params.get('t') ?? undefined;
 
-  twitchAuth.clientID = 'uxj8hdpst8v4lutkr842b3lxz8tp0o';
-  twitchAuth.token = 'em91m010b52oxx0d1il2c8v6dgjmw1';
   
   const cp = CommandProcessor.inst = new CommandProcessor(channel, username, authToken);
   await cp.connect();

@@ -76,7 +76,13 @@ export default function ImageRain(props: Props) {
 
   return <>
     {images.map((info, idx) => (
-      <img src={info.name} key={idx} width={info.size} style={{ left: info.x, top: info.y, position: 'absolute', transform: `rotate(${info.rot}deg)` }} />
+      <img src={info.name} key={idx} width={info.size} style={{
+        left: info.x,
+        top: info.y,
+        position: 'absolute',
+        transform: `rotate(${info.rot}deg)`,
+        opacity: 0.8,
+      }} />
     ))}
   </>
 }

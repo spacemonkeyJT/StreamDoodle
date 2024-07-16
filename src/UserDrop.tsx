@@ -100,7 +100,7 @@ export default function UserDrop() {
 
     if (profilePic) {
       setUsers(users => {
-        //if (!users.find(r => r.username === username)) {
+        if (!users.find(r => r.username === username)) {
           const user: UserInfo = {
             username,
             imageName: profilePic,
@@ -114,8 +114,8 @@ export default function UserDrop() {
           }
 
           return [...users, user];
-        // }
-        // return users;
+        }
+        return users;
       });
     }
   }

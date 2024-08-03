@@ -2,8 +2,8 @@
   "name": "streamdoodle-server",
   "version": "1.0.0",
   "main": "server.cjs",
-  "author": "",
-  "license": "ISC",
+  "author": "spacemonkeyJT",
+  "license": "MIT",
   "description": "",
   "scripts": {
     "dev": "nodemon -e cjs"

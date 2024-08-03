@@ -1,0 +1,19 @@
+{
+  "name": "streamdoodle",
+  "author": "spacemonkeyJT",
+  "module": "index.ts",
+  "devDependencies": {
+    "@types/bun": "latest",
+    "concurrently": "^8.2.2"
+  },
+  "peerDependencies": {
+    "typescript": "^5.0.0"
+  },
+  "license": "MIT",
+  "scripts": {
+    "dev": "concurrently --kill-others \"bun dev-client\" \"bun dev-server\"",
+    "dev-client": "cd client && bun dev",
+    "dev-server": "cd server && bun dev"
+  },
+  "type": "module"
+}

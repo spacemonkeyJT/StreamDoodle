@@ -1,3 +1,4 @@
+import { useEffect } from "react";
 import ImageRain from "./ImageRain";
 import UserDrop from "./UserDrop";
 
@@ -15,7 +16,15 @@ const merchImages = [
   'kmrkle/merch/shirt_sky.png',
 ]
 
+async function api(url: string) {
+  return await (await fetch(import.meta.env.VITE_API_BASE_URL + url)).json();
+}
+
 function App() {
+  useEffect(() => {
+    console.log('mode:', import.meta.env.MODE);
+    api('').then(console.log);
+  }, []);
   return <>
     {/* <img src="lastofus.webp" style={{ position: 'absolute', width: window.innerWidth, zIndex: -1 }} /> */}
     <ImageRain imageNames={merchImages} />

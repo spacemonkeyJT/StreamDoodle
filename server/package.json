@@ -1,18 +1,20 @@
 {
   "name": "streamdoodle-server",
   "version": "1.0.0",
-  "main": "server.cjs",
+  "main": "server.ts",
   "author": "spacemonkeyJT",
   "license": "MIT",
   "description": "",
   "scripts": {
-    "dev": "nodemon -e cjs"
+    "dev": "nodemon -e ts --exec \"bun server.ts\""
   },
   "dependencies": {
     "cors": "^2.8.5",
     "express": "^4.19.2"
   },
   "devDependencies": {
+    "@types/cors": "^2.8.17",
+    "@types/express": "^4.17.21",
     "nodemon": "^3.1.4"
   }
 }

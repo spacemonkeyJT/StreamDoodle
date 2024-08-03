@@ -3,7 +3,6 @@ import ReactDOM from 'react-dom/client'
 import App from './App.tsx'
 import './index.less'
 import CommandProcessor from './CommandProcessor.ts'
-import { twitchAuth } from './twitch.ts'
 
 async function main() {
   const params = new URL(location.href).searchParams;

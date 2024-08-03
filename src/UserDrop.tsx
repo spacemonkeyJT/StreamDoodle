@@ -122,7 +122,7 @@ export default function UserDrop() {
 
   const cp = CommandProcessor.inst;
 
-  useEffect(() => cp.onMessage.subscribe(async (userstate, message) => {
+  useEffect(() => cp.onMessage.subscribe(async (userstate) => {
     doDrop(userstate["display-name"]!);
   }), []);
 

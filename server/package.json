@@ -6,7 +6,8 @@
   "license": "MIT",
   "description": "",
   "scripts": {
-    "dev": "nodemon -e ts --exec \"bun server.ts\""
+    "dev": "nodemon -e ts --exec \"bun server.ts\"",
+    "build": "bun build server.ts --target node --outfile dist.mjs"
   },
   "dependencies": {
     "cors": "^2.8.5",

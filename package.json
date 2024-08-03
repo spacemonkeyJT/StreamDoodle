@@ -8,7 +8,8 @@
     "dev": "concurrently --kill-others \"bun dev-client\" \"bun dev-server\"",
     "dev-client": "cd client && bun dev",
     "dev-server": "cd server && bun dev",
-    "postinstall": "cd client && bun i && cd ../server && bun i"
+    "postinstall": "cd client && bun i && cd ../server && bun i",
+    "build": "cd client && bun run build && cd ../server && bun run build"
   },
   "devDependencies": {
     "@types/bun": "latest",

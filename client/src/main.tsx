@@ -1,23 +1,39 @@
 import React from 'react'
 import ReactDOM from 'react-dom/client'
-import App from './App.tsx'
 import './index.less'
-// import CommandProcessor from './CommandProcessor.ts'
+import {
+  createBrowserRouter,
+  RouterProvider,
+} from "react-router-dom";
+import ErrorPage from './components/ErrorPage';
+import Login from './components/Login';
+import App from './components/App';
+import Home from './components/Home';
+import Test from './components/Test';
+
+const router = createBrowserRouter([
+  {
+    path: "/",
+    element: <App />,
+    errorElement: <ErrorPage />,
+    children: [{
+      index: true,
+      element: <Home />,
+    }, {
+      path: 'test',
+      element: <Test />,
+    }]
+  },
+  {
+    path: '/login',
+    element: <Login />,
+  }
+]);
 
 async function main() {
-  // const params = new URL(location.href).searchParams;
-  // const channel = params.get('c') ?? undefined;
-  // const username = params.get('u') ?? undefined;
-  // const authToken = params.get('t') ?? undefined;
-
-  
-  // const cp = CommandProcessor.inst = new CommandProcessor(channel, username, authToken);
-  // await cp.connect();
-  
   ReactDOM.createRoot(document.getElementById('root')!).render(
     <React.StrictMode>
-      {/* {cp.error} */}
-      <App />
+      <RouterProvider router={router} />
     </React.StrictMode>,
   )
 }

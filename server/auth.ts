@@ -3,7 +3,7 @@ import jwt from 'jsonwebtoken';
 import crypto from 'crypto';
 import { DEV } from './constants';
 
-const secretKey = crypto.randomBytes(64).toString('hex');
+const secretKey = process.env.JWT_SECRET ?? crypto.randomBytes(64).toString('hex');
 
 export function registerAuthRoutes(app: Express) {
   // Require valid authentication for API requests.

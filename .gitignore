@@ -25,3 +25,5 @@ dist-ssr
 
 notes.md
 dist.mjs
+
+/server/.env.development

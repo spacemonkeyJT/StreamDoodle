@@ -15,6 +15,10 @@ app.use(cookieParser());
 
 registerAuthRoutes(app);
 
+app.get('/api/userinfo', (req, res) => {
+  res.send({ username: 'testing' });
+});
+
 if (DEV) {
   // In dev mode, proxy the page requests to the running vite server
   app.use('/', proxy('http://localhost:3000'));

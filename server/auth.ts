@@ -8,6 +8,9 @@ const secretKey = crypto.randomBytes(64).toString('hex');
 export function registerAuthRoutes(app: Express) {
   // Require valid authentication for API requests.
   app.use('/api/', (req, res, next) => {
+    if (req.path.startsWith('/login/')) {
+      return next();
+    }
     const token = req.cookies['token'];
     const access_token = req.cookies['token'];
     if (token && access_token) {

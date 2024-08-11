@@ -1,8 +1,12 @@
-export const API_URL = import.meta.env.VITE_API_BASE_URL;
-
-async function api(url: string) {
+async function fetchApi(url: string, opts: FetchRequestInit = {}) {
   const apiUrl = `/api/${url}`;
-  const res = await fetch(apiUrl);
+  const res = await fetch(apiUrl, {
+    headers: {
+      'Content-Type': 'application/json',
+      Accept: 'application/json',
+    },
+    ...opts,
+  });
   if (res.status === 200) {
     return await res.json();
   } else if (res.status === 401) {
@@ -13,6 +17,13 @@ async function api(url: string) {
   }
 }
 
-export async function getUserInfo() {
-  return api('userinfo');
+export async function apiGetUserInfo() {
+  return fetchApi('userinfo');
+}
+
+export async function apiLoginTwitch(access_token: string) {
+  return await fetchApi('login/twitch', {
+    method: 'POST',
+    body: JSON.stringify({ access_token }),
+  });
 }

@@ -10,14 +10,14 @@ import Login from './components/Login';
 import App from './components/App';
 import Home from './components/Home';
 import Test from './components/Test';
-import { getUserInfo } from './api';
+import { apiGetUserInfo } from './api';
 
 const router = createBrowserRouter([
   {
     path: "/",
     element: <App />,
     errorElement: <ErrorPage />,
-    loader: getUserInfo,
+    loader: apiGetUserInfo,
     children: [{
       index: true,
       element: <Home />,

@@ -5,6 +5,7 @@ import cookieParser from 'cookie-parser';
 import { registerAuthRoutes } from './auth';
 import { DEV } from './constants';
 import proxy from 'express-http-proxy';
+import { twitchGetCurrentUser } from './twitch';
 
 const app = express();
 const port = process.env.PORT || 3001;
@@ -15,8 +16,14 @@ app.use(cookieParser());
 
 registerAuthRoutes(app);
 
-app.get('/api/userinfo', (req, res) => {
-  res.send({ username: 'testing' });
+app.get('/api/userinfo', async (req, res) => {
+  // try {
+  //   const token = req.cookies['access_token'];
+  //   res.send(await twitchGetCurrentUser(token));
+  // } catch (err) {
+  //   return err;
+  // }
+  res.send({ ok: true });
 });
 
 if (DEV) {

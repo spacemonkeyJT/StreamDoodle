@@ -4,6 +4,8 @@ import Cookies from 'js-cookie';
 import { getLocationHash } from "../utils";
 import { twitchLoginUrl } from "../twitch";
 import log from "../log";
+import './Login.less'
+import TwitchLogo from './twitch-icon.svg';
 
 async function tryLogin(access_token: string | undefined | null) {
   if (access_token) {
@@ -37,5 +39,11 @@ export default function Login() {
     })();
   }, [])
 
-  return <a href={twitchLoginUrl}>Login with Twitch</a>
+  return <div className="login">
+    <h1>streamdoodle</h1>
+    <a className="login-twitch" href={twitchLoginUrl}>
+      <img className="logo" src={TwitchLogo} />
+      <div className="label">Login with Twitch</div>
+    </a>
+  </div>
 }

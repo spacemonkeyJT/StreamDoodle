@@ -1,4 +1,4 @@
-import { CookieOptions, Express } from 'express';
+import type { CookieOptions, Express } from 'express';
 import jwt from 'jsonwebtoken';
 import crypto from 'crypto';
 import { twitchGetCurrentUser } from './twitch';

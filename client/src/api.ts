@@ -1,11 +1,5 @@
 import Cookies from 'js-cookie';
-
-export class HttpError extends Error {
-  constructor(message: string, public status: number, public statusText: string) {
-    super(message);
-    this.name = 'HttpError';
-  }
-}
+import { HttpError } from '../../shared/exceptions';
 
 async function fetchApi<T>(url: string, opts: FetchRequestInit = {}) {
   const apiUrl = `/api/${url}`;

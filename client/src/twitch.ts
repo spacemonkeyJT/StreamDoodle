@@ -1,7 +1,9 @@
-export const twitchAuth = {
-  clientID: '',
-  token: '',
-};
+import Cookies from 'js-cookie';
+
+export const clientID = 'f3t4znfgwxi20ksfpksm81hwywz4a9';
+
+const redirectUri = `${import.meta.env.VITE_BASE_URL}/login`;
+export const twitchLoginUrl = `https://id.twitch.tv/oauth2/authorize?response_type=token&client_id=${clientID}&redirect_uri=${redirectUri}`;
 
 export type TwitchUser = {
   broadcaster_type: string;
@@ -26,8 +28,8 @@ const userCache = new Map<string, TwitchUser>();
 async function apiCall<T>(url: string) {
   const res = await fetch(`https://api.twitch.tv/helix/${url}`, {
     headers: {
-      Authorization: `Bearer ${twitchAuth.token}`,
-      'Client-Id': twitchAuth.clientID
+      Authorization: `Bearer ${Cookies.get('access_token')}`,
+      'Client-Id': clientID
     }
   })
   if (res.status >= 400) {

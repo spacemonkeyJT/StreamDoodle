@@ -1,7 +1,6 @@
 import { CookieOptions, Express } from 'express';
 import jwt from 'jsonwebtoken';
 import crypto from 'crypto';
-import { DEV } from './constants';
 import { twitchGetCurrentUser } from './twitch';
 import log from './log';
 

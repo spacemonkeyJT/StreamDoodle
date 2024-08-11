@@ -13,12 +13,14 @@
     "preview": "vite preview"
   },
   "dependencies": {
+    "js-cookie": "^3.0.5",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
     "react-router-dom": "^6.26.0",
     "tmi.js": "^1.8.5"
   },
   "devDependencies": {
+    "@types/js-cookie": "^3.0.6",
     "@types/react": "^18.2.43",
     "@types/react-dom": "^18.2.17",
     "@types/tmi.js": "^1.8.6",

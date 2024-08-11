@@ -1,11 +1,11 @@
 
-export async function twitchApi(token: string, url: string, opts?: FetchRequestInit) {
+export async function twitchApi(token: string, url: string, opts: FetchRequestInit = {}) {
   const res = await fetch(`https://api.twitch.tv/helix/${url}`, {
-    ...(opts ?? {}),
+    ...opts,
     headers: {
       Authorization: `Bearer ${token}`,
       'Client-Id': 'f3t4znfgwxi20ksfpksm81hwywz4a9',
-      ...(opts?.headers ?? {}),
+      ...(opts.headers ?? {}),
     },
   });
   if (res.status !== 200) {

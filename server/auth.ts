@@ -15,8 +15,7 @@ export function registerAuthRoutes(app: Express) {
       return next();
     }
     const token = req.cookies['token'];
-    const access_token = req.cookies['access_token'];
-    if (token && access_token) {
+    if (token) {
       try {
         log('verifying token');
         jwt.verify(token, secretKey);
@@ -35,14 +34,16 @@ export function registerAuthRoutes(app: Express) {
   app.post('/api/login/twitch', async (req, res) => {
     try {
       const { access_token } = req.body;
-      log({ access_token });
       if (access_token) {
+        log(`Login request for access token: ${access_token}`);
         const twitchUser = await twitchGetCurrentUser(access_token);
-        log({ twitchUser });
+        log(`Accessed Twitch info for user: ${twitchUser.display_name}`)
         const payload = { userId: 123 };
-        const token = jwt.sign(payload, secretKey, { expiresIn: '1h' });
+        const token = jwt.sign(payload, secretKey, { expiresIn: '1 hour' });
+        log('Login validated');
         res.send({ token });
       } else {
+        log('Login request with no access token!');
         res.status(401).send();
       }
     } catch (err) {

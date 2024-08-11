@@ -3,12 +3,18 @@ import { apiLoginTwitch } from "../api";
 import Cookies from 'js-cookie';
 import { getLocationHash } from "../utils";
 import { twitchLoginUrl } from "../twitch";
+import log from "../log";
 
-async function tryLogin(access_token: string | undefined) {
+async function tryLogin(access_token: string | undefined | null) {
   if (access_token) {
-    Cookies.set('access_token', access_token);
+    if (!localStorage.getItem('access_token')) {
+      log(`Storing access token: ${access_token}`);
+      localStorage.setItem('access_token', access_token);
+    }
     try {
+      log(`Attempting to login with access token: ${access_token}`);
       const { token } = await apiLoginTwitch(access_token);
+      log('Login successful');
       Cookies.set('token', token);
       return true;
     } catch (err) {
@@ -20,14 +26,13 @@ async function tryLogin(access_token: string | undefined) {
 
 export default function Login() {
   const token = Cookies.get('token');
-  const access_token = Cookies.get('access_token');
+  const access_token = localStorage.getItem('access_token');
 
   useEffect(() => {
     (async () => {
       if ((token && access_token) || await tryLogin(getLocationHash().access_token) || await tryLogin(access_token)) {
+        log('Logged in, navigating to site root');
         location.href = '/';
-      } else {
-        Cookies.remove('access_token');
       }
     })();
   }, [])

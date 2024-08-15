@@ -9,7 +9,6 @@ import ErrorPage from './components/ErrorPage';
 import Login from './components/Login';
 import App from './components/App';
 import Home from './components/Home';
-import Test from './components/Test';
 import { apiGetUserInfo, loadApi } from './api';
 
 const router = createBrowserRouter([
@@ -21,9 +20,6 @@ const router = createBrowserRouter([
     children: [{
       index: true,
       element: <Home />,
-    }, {
-      path: 'test',
-      element: <Test />,
     }]
   },
   {

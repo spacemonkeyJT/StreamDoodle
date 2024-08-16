@@ -12,7 +12,6 @@ async function logout() {
 
 function App() {
   return <div>
-    App root
     <button onClick={logout}>Log out</button>
     <Outlet />
   </div>

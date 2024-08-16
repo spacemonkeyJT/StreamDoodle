@@ -4,11 +4,11 @@ import { AuthInfo, getAuthInfo } from "../utils/auth"
 import { supabase } from "../utils/supabase"
 
 export interface RootData {
-  auth: AuthInfo,
-  channels: Tables<"channels">[]
+  auth: AuthInfo | null,
+  channels: Tables<"channels">[] | null
 }
 
-export async function loadRootData() {
+export async function loadRootData(): Promise<RootData> {
   return {
     auth: getAuthInfo(),
     channels: (await supabase.from('channels').select()).data,

@@ -93,7 +93,7 @@ export default function UserDrop() {
   useEffect(() => {
     requestRef.current = requestAnimationFrame(animate)
     return () => cancelAnimationFrame(requestRef.current!)
-  }, [])
+  }/*, []*/)
 
   async function doDrop(username: string) {
     const profilePic = (await getUserInfo(username))?.profile_image_url
@@ -124,7 +124,7 @@ export default function UserDrop() {
 
   useEffect(() => cp.onMessage.subscribe(async (userstate) => {
     doDrop(userstate["display-name"]!)
-  }), [])
+  })/*, []*/)
 
   return <>
     <button onClick={() => doDrop('kmrkle')}>test</button>

@@ -47,7 +47,7 @@ export default function ImageRain(props: Props) {
   useEffect(() => {
     requestRef.current = requestAnimationFrame(animate)
     return () => cancelAnimationFrame(requestRef.current!)
-  }, [])
+  }/*, []*/)
 
   const sizeMin = props.sizeMin ?? 50
   const sizeMax = props.sizeMax ?? 200
@@ -72,7 +72,7 @@ export default function ImageRain(props: Props) {
       setImages(currentImages => [...currentImages, img])
     }, spawnInterval)
     return () => clearInterval(interval)
-  }, [])
+  }/*, []*/)
 
   return <>
     {images.map((info, idx) => (

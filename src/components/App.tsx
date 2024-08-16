@@ -11,7 +11,6 @@ async function logout() {
 }
 
 function App() {
-  console.log(JSON.parse(localStorage.getItem('sb-knnmxxukaxfrhabsstvh-auth-token') ?? '{}'))
   return <div>
     App root
     <button onClick={logout}>Log out</button>

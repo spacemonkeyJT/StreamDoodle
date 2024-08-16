@@ -1,6 +1,6 @@
 import { useEffect, useRef, useState } from "react"
-import CommandProcessor from "../CommandProcessor"
-import { getUserInfo } from "../twitch"
+import CommandProcessor from "../utils/CommandProcessor"
+import { getUserInfo } from "../utils/twitch"
 
 interface UserInfo {
   x: number;

@@ -3,7 +3,7 @@ import './Login.less'
 import { Session } from '@supabase/supabase-js'
 import { Auth } from '@supabase/auth-ui-react'
 import { ThemeSupa } from '@supabase/auth-ui-shared'
-import { supabase } from "../db"
+import { supabase } from "../utils/db"
 
 export default function Login() {
   const [session, setSession] = useState<Session | null>(null)

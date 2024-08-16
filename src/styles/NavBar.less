@@ -1,9 +1,27 @@
 .navbar {
   background-color: #171717;
-  
+
   .navitems {
-    .navitem.selected {
-      font-weight: bold;
+    .navitem {
+      color: #777;
+      text-decoration: none;
+      display: inline-block;
+      font-size: 16px;
+      padding: 7px 10px 8px 10px;
+      margin: 5px;
+      border-radius: 5px;
+
+      &.selected {
+        color: #ddd;
+        background-color: #3d3d3d;
+      }
     }
+  }
+
+  .logout {
+    position: absolute;
+    right: 5px;
+    top: 6px;
+    cursor: pointer;
   }
 }

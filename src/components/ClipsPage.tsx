@@ -1,7 +1,7 @@
 export default function ClipsPage() {
   return (
     <div>
-      <h2>Clips</h2>
+      <h2 style={{ marginTop: 0 }}>Clips</h2>
     </div>
   )
 }

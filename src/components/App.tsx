@@ -12,7 +12,9 @@ function App() {
 
   return <>
     <NavBar />
-    <Outlet />
+    <div className="page">
+      <Outlet />
+    </div>
   </>
 }
 

@@ -20,13 +20,12 @@ export function NavBar() {
   return (
     <div className="navbar">
       <div className="navitems">
-        <Link className="logo" to="/" />
         <NavItem label="Channels" route="/channels" />
         <NavItem label="Clips" route="/clips" />
         <NavItem label="Overlay" route="/overlay" />
         <NavItem label="Bot" route="/bot" />
       </div>
-      <button className="logout" onClick={logout}>Log out</button>
+      <img src="logout.png" className="logout" onClick={logout} title="Log out" />
     </div>
   )
 }

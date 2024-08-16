@@ -19,7 +19,7 @@ export interface User {
   confirmed_at:       Date;
   last_sign_in_at:    Date;
   app_metadata:       AppMetadata;
-  user_metadata:      Data;
+  user_metadata:      UserMetadata;
   identities:         Identity[];
   created_at:         Date;
   updated_at:         Date;
@@ -35,7 +35,7 @@ export interface Identity {
   identity_id:     string;
   id:              string;
   user_id:         string;
-  identity_data:   Data;
+  identity_data:   UserMetadata;
   provider:        string;
   last_sign_in_at: Date;
   created_at:      Date;
@@ -43,7 +43,7 @@ export interface Identity {
   email:           string;
 }
 
-export interface Data {
+export interface UserMetadata {
   avatar_url:     string;
   custom_claims:  CustomClaims;
   email:          string;

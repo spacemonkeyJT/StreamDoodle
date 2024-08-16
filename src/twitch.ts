@@ -1,5 +1,3 @@
-import Cookies from 'js-cookie';
-
 export const clientID = 'f3t4znfgwxi20ksfpksm81hwywz4a9';
 
 const redirectUri = `${import.meta.env.VITE_BASE_URL}/login`;
@@ -26,9 +24,10 @@ const userCache = new Map<string, TwitchUser>();
  * @returns The parsed JSON response.
  */
 async function apiCall<T>(url: string) {
+  const access_token = 'TODO';
   const res = await fetch(`https://api.twitch.tv/helix/${url}`, {
     headers: {
-      Authorization: `Bearer ${Cookies.get('access_token')}`,
+      Authorization: `Bearer ${access_token}`,
       'Client-Id': clientID
     }
   })

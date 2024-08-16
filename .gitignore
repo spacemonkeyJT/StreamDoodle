@@ -24,6 +24,5 @@ dist-ssr
 *.sw?
 
 notes.md
-dist.js
 
-/server/.env.development
+.env.development

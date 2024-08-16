@@ -9,14 +9,12 @@ import ErrorPage from './components/ErrorPage';
 import Login from './components/Login';
 import App from './components/App';
 import Home from './components/Home';
-import { apiGetUserInfo, loadApi } from './api';
 
 const router = createBrowserRouter([
   {
     path: "/",
     element: <App />,
     errorElement: <ErrorPage />,
-    loader: () => loadApi(apiGetUserInfo),
     children: [{
       index: true,
       element: <Home />,

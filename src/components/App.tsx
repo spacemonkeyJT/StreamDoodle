@@ -7,6 +7,7 @@ function App() {
 
   if (!auth) {
     location.href = '/login'
+    return null
   }
 
   return <>

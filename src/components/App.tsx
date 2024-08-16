@@ -1,4 +1,4 @@
-import { Outlet } from "react-router-dom";
+import { Outlet } from "react-router-dom"
 
 function App() {
   console.log(JSON.parse(localStorage.getItem('sb-knnmxxukaxfrhabsstvh-auth-token') ?? '{}'))

@@ -1,5 +1,5 @@
-import tmi from 'tmi.js';
-import EventList from './EventList';
+import tmi from 'tmi.js'
+import EventList from './EventList'
 
 interface CommandOptions {
   command: string
@@ -11,14 +11,14 @@ interface CommandOptions {
 }
 
 export default class CommandProcessor {
-  private chat?: tmi.Client;
+  private chat?: tmi.Client
 
-  static inst: CommandProcessor;
+  static inst: CommandProcessor
 
-  error: string | undefined;
+  error: string | undefined
 
-  onCommand = new EventList<(opts: CommandOptions) => unknown>();
-  onMessage = new EventList<(userstate: tmi.ChatUserstate, message: string) => unknown>();
+  onCommand = new EventList<(opts: CommandOptions) => unknown>()
+  onMessage = new EventList<(userstate: tmi.ChatUserstate, message: string) => unknown>()
 
   constructor(
     private channel?: string,
@@ -41,28 +41,28 @@ export default class CommandProcessor {
           password: this.authToken
         },
         channels: [this.channel!]
-      });
+      })
     }
   }
 
   public async connect() {
     if (this.chat) {
-      console.log(`Connecting to channel ${this.channel} as ${this.username}`);
+      console.log(`Connecting to channel ${this.channel} as ${this.username}`)
       try {
-        await this.chat.connect();
+        await this.chat.connect()
       } catch (ex) {
-        this.error = `${ex}`;
-        return;
+        this.error = `${ex}`
+        return
       }
-      console.log('Connected successfully');
+      console.log('Connected successfully')
 
-      this.chat.on('message', async (_channel, userstate, message, _self) => {
+      this.chat.on('message', async (_channel, userstate, message) => {
         try {
-          const command = message.trim();
+          const command = message.trim()
           if (command.startsWith('!')) {
-            const commandName = command.split(' ')[0].toLowerCase();
-            const args = command.substring(commandName.length + 1).trim();
-            const broadcaster = !!(userstate.badges?.broadcaster);
+            const commandName = command.split(' ')[0].toLowerCase()
+            const args = command.substring(commandName.length + 1).trim()
+            const broadcaster = !!(userstate.badges?.broadcaster)
             const opts: CommandOptions = {
               command: commandName,
               args,
@@ -70,14 +70,14 @@ export default class CommandProcessor {
               mod: broadcaster || !!(userstate.mod),
               vip: !!userstate.badges?.vip,
               username: userstate['display-name']!
-            };
-            this.onCommand.invoke(opts);
+            }
+            this.onCommand.invoke(opts)
           }
-          this.onMessage.invoke(userstate, message);
+          this.onMessage.invoke(userstate, message)
         } catch (error) {
-          console.error(error);
+          console.error(error)
         }
-      });
+      })
     }
   }
 }

@@ -1,9 +1,9 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState } from "react"
 import './Login.less'
 import { Session } from '@supabase/supabase-js'
 import { Auth } from '@supabase/auth-ui-react'
 import { ThemeSupa } from '@supabase/auth-ui-shared'
-import { supabase } from "../db";
+import { supabase } from "../db"
 
 // async function tryLogin(access_token: string | undefined | null) {
 //   if (access_token) {

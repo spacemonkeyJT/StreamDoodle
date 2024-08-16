@@ -9,7 +9,7 @@ const defaultSettings: Settings = {
 const SettingsStorageID = 'streamdoodle-settings'
 
 function loadSettings(): Settings {
-  const settingsJson = localStorage.getItem(SettingsStorageID);
+  const settingsJson = localStorage.getItem(SettingsStorageID)
   if (settingsJson) {
     return {
       ...defaultSettings,
@@ -19,14 +19,14 @@ function loadSettings(): Settings {
   return defaultSettings
 }
 
-let _settings = loadSettings();
+let _settings = loadSettings()
 
 export function getSettings() {
-  return _settings;
+  return _settings
 }
 
 export function updateSettings(update: (s: Settings) => unknown) {
-  update(_settings);
-  _settings = { ..._settings };
+  update(_settings)
+  _settings = { ..._settings }
   localStorage.setItem(SettingsStorageID, JSON.stringify(_settings))
 }

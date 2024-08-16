@@ -1,7 +1,7 @@
-export const clientID = 'f3t4znfgwxi20ksfpksm81hwywz4a9';
+export const clientID = 'f3t4znfgwxi20ksfpksm81hwywz4a9'
 
-const redirectUri = `${import.meta.env.VITE_BASE_URL}/login`;
-export const twitchLoginUrl = `https://id.twitch.tv/oauth2/authorize?response_type=token&client_id=${clientID}&redirect_uri=${redirectUri}`;
+const redirectUri = `${import.meta.env.VITE_BASE_URL}/login`
+export const twitchLoginUrl = `https://id.twitch.tv/oauth2/authorize?response_type=token&client_id=${clientID}&redirect_uri=${redirectUri}`
 
 export type TwitchUser = {
   broadcaster_type: string;
@@ -16,7 +16,7 @@ export type TwitchUser = {
   view_count: number;
 }
 
-const userCache = new Map<string, TwitchUser>();
+const userCache = new Map<string, TwitchUser>()
 
 /**
  * Makes a call to the Twitch API.
@@ -24,7 +24,7 @@ const userCache = new Map<string, TwitchUser>();
  * @returns The parsed JSON response.
  */
 async function apiCall<T>(url: string) {
-  const access_token = 'TODO';
+  const access_token = 'TODO'
   const res = await fetch(`https://api.twitch.tv/helix/${url}`, {
     headers: {
       Authorization: `Bearer ${access_token}`,
@@ -43,8 +43,8 @@ async function apiCall<T>(url: string) {
 
 export async function getUserInfo(username: string) {
   if (!userCache.has(username)) {
-    const res = await apiCall<{ data: TwitchUser[] }>(`users?login=${username}`);
-    userCache.set(username, res.data[0]);
+    const res = await apiCall<{ data: TwitchUser[] }>(`users?login=${username}`)
+    userCache.set(username, res.data[0])
   }
-  return userCache.get(username);
+  return userCache.get(username)
 }

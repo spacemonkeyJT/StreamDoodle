@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react"
 
 interface ImageInfo {
   size: number;
@@ -22,43 +22,43 @@ interface Props {
 }
 
 export default function ImageRain(props: Props) {
-  const [images, setImages] = useState<ImageInfo[]>([]);
+  const [images, setImages] = useState<ImageInfo[]>([])
 
-  const requestRef = useRef<number>();
-  const previousTimeRef = useRef<number>();
+  const requestRef = useRef<number>()
+  const previousTimeRef = useRef<number>()
 
   const animate: FrameRequestCallback = time => {
     if (previousTimeRef.current != undefined) {
-      const deltaTime = time - previousTimeRef.current;
+      const deltaTime = time - previousTimeRef.current
       
       setImages(currentImages => {
         for (const image of currentImages) {
-          image.x += image.vx * deltaTime / 1000;
-          image.y += image.vy * deltaTime / 1000;
-          image.rot += image.vrot * deltaTime / 1000;
+          image.x += image.vx * deltaTime / 1000
+          image.y += image.vy * deltaTime / 1000
+          image.rot += image.vrot * deltaTime / 1000
         }
-        return currentImages.filter(r => r.y < window.innerHeight);
-      });
+        return currentImages.filter(r => r.y < window.innerHeight)
+      })
     }
-    previousTimeRef.current = time;
-    requestRef.current = requestAnimationFrame(animate);
+    previousTimeRef.current = time
+    requestRef.current = requestAnimationFrame(animate)
   }
 
   useEffect(() => {
-    requestRef.current = requestAnimationFrame(animate);
-    return () => cancelAnimationFrame(requestRef.current!);
-  }, []);
+    requestRef.current = requestAnimationFrame(animate)
+    return () => cancelAnimationFrame(requestRef.current!)
+  }, [])
 
-  const sizeMin = props.sizeMin ?? 50;
-  const sizeMax = props.sizeMax ?? 200;
-  const rotMax = props.rotMax ?? 50;
-  const spawnInterval = props.spawnInterval ?? 500;
-  const fallRatio = props.fallRatio ?? 1.0;
-  const driftRatio = props.driftRatio ?? 1.0;
+  const sizeMin = props.sizeMin ?? 50
+  const sizeMax = props.sizeMax ?? 200
+  const rotMax = props.rotMax ?? 50
+  const spawnInterval = props.spawnInterval ?? 500
+  const fallRatio = props.fallRatio ?? 1.0
+  const driftRatio = props.driftRatio ?? 1.0
 
   useEffect(() => {
     const interval = setInterval(() => {
-      const size = Math.random() * (sizeMax - sizeMin) + sizeMin;
+      const size = Math.random() * (sizeMax - sizeMin) + sizeMin
       const img: ImageInfo = {
         size,
         x: Math.random() * window.innerWidth,
@@ -69,9 +69,9 @@ export default function ImageRain(props: Props) {
         vrot: Math.random() * rotMax * 2 - rotMax,
         name: props.imageNames[Math.floor(Math.random() * props.imageNames.length)],
       }
-      setImages(currentImages => [...currentImages, img]);
-    }, spawnInterval);
-    return () => clearInterval(interval);
+      setImages(currentImages => [...currentImages, img])
+    }, spawnInterval)
+    return () => clearInterval(interval)
   }, [])
 
   return <>

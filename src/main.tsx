@@ -4,11 +4,11 @@ import './index.less'
 import {
   createBrowserRouter,
   RouterProvider,
-} from "react-router-dom";
-import ErrorPage from './components/ErrorPage';
-import Login from './components/Login';
-import App from './components/App';
-import Home from './components/Home';
+} from "react-router-dom"
+import ErrorPage from './components/ErrorPage'
+import Login from './components/Login'
+import App from './components/App'
+import Home from './components/Home'
 
 const router = createBrowserRouter([
   {
@@ -24,7 +24,7 @@ const router = createBrowserRouter([
     path: '/login',
     element: <Login />,
   }
-]);
+])
 
 async function main() {
   ReactDOM.createRoot(document.getElementById('root')!).render(
@@ -34,4 +34,4 @@ async function main() {
   )
 }
 
-main().catch(console.error);
+main().catch(console.error)

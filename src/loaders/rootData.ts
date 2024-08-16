@@ -5,13 +5,13 @@ import { supabase } from "../utils/supabase"
 
 export interface RootData {
   auth: AuthInfo | null,
-  channels: Tables<"channels">[] | null
+  channels: Tables<"channels">[]
 }
 
 export async function loadRootData(): Promise<RootData> {
   return {
     auth: getAuthInfo(),
-    channels: (await supabase.from('channels').select()).data,
+    channels: (await supabase.from('channels').select()).data ?? [],
   }
 }
 

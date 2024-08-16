@@ -25,8 +25,10 @@ export default function Login() {
   if (!session) {
     return (
       <div className="login">
-        <h2>streamdoodle</h2>
-        <Auth supabaseClient={supabase} appearance={{ theme: ThemeSupa }} providers={["twitch"]} onlyThirdPartyProviders />
+        <div className="login-panel panel center">
+          <h2>streamdoodle</h2>
+          <Auth supabaseClient={supabase} appearance={{ theme: ThemeSupa }} providers={["twitch"]} onlyThirdPartyProviders />
+        </div>
       </div>
     )
   }

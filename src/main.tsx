@@ -9,6 +9,7 @@ import ErrorPage from './components/ErrorPage'
 import Login from './components/Login'
 import App from './components/App'
 import Home from './components/Home'
+import { supabase } from './utils/db'
 
 const router = createBrowserRouter([
   {
@@ -17,6 +18,7 @@ const router = createBrowserRouter([
     errorElement: <ErrorPage />,
     children: [{
       index: true,
+      loader: async () => (await supabase.from('channels').select()).data,
       element: <Home />,
     }]
   },

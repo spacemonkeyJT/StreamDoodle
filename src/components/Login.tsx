@@ -22,12 +22,6 @@ export default function Login() {
     return () => subscription.unsubscribe()
   }, [])
 
-  useEffect(() => {
-    (async () => {
-      console.log(await supabase.from('users').select())
-    })()
-  }, [])
-
   if (!session) {
     return (
       <div className="login">

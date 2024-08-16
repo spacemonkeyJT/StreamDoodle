@@ -28,8 +28,8 @@ async function apiCall<T>(url: string) {
   const res = await fetch(`https://api.twitch.tv/helix/${url}`, {
     headers: {
       Authorization: `Bearer ${access_token}`,
-      'Client-Id': clientID
-    }
+      'Client-Id': clientID,
+    },
   })
   if (res.status >= 400) {
     throw {

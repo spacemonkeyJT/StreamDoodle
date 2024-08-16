@@ -1,20 +1,11 @@
 import { Outlet } from "react-router-dom"
-import { supabase } from "../utils/db"
-
-async function logout() {
-  const { error } = await supabase.auth.signOut()
-  if (error) {
-    console.error(error)
-  } else {
-    location.href = '/login'
-  }
-}
+import { NavBar } from "./NavBar"
 
 function App() {
-  return <div>
-    <button onClick={logout}>Log out</button>
+  return <>
+    <NavBar />
     <Outlet />
-  </div>
+  </>
 }
 
 export default App

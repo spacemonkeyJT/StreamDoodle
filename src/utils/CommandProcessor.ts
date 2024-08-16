@@ -34,13 +34,13 @@ export default class CommandProcessor {
     } else {
       this.chat = new tmi.client({
         options: {
-          debug: true
+          debug: true,
         },
         identity: {
           username: this.username,
-          password: this.authToken
+          password: this.authToken,
         },
-        channels: [this.channel!]
+        channels: [this.channel!],
       })
     }
   }
@@ -69,7 +69,7 @@ export default class CommandProcessor {
               broadcaster,
               mod: broadcaster || !!(userstate.mod),
               vip: !!userstate.badges?.vip,
-              username: userstate['display-name']!
+              username: userstate['display-name']!,
             }
             this.onCommand.invoke(opts)
           }

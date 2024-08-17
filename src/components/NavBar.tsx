@@ -1,6 +1,7 @@
 import { Link, useLocation } from "react-router-dom"
 import { supabase } from "../utils/supabase"
 import { ReactNode, useState } from "react"
+import { useRootData } from "../loaders/rootData"
 
 async function logout() {
   const { error } = await supabase.auth.signOut()
@@ -18,6 +19,7 @@ function NavItem(props: { children: ReactNode, route: string, onClick?: () => vo
 
 export function NavBar() {
   const [burgerActive, setBurgerActive] = useState(false)
+  const { user_metadata } = useRootData().auth!.user
   
   return <>
     <nav className="navbar" role="navigation" aria-label="main navigation">
@@ -43,8 +45,17 @@ export function NavBar() {
         </div>
 
         <div className="navbar-end">
-          <div className="navbar-item">
-            <img src="logout.png" className="logout" onClick={logout} title="Log out" />
+          <div className="navbar-item has-dropdown is-hoverable">
+            <a className="navbar-link">
+              <img src={user_metadata.avatar_url} style={{ borderRadius: 14}} />
+              {user_metadata.nickname}
+            </a>
+
+            <div className="navbar-dropdown is-right">
+              <a className="navbar-item" onClick={logout}>
+                <img src="logout.png" /> Log out
+              </a>
+            </div>
           </div>
         </div>
       </div>

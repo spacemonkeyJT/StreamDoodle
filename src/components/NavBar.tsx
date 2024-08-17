@@ -1,6 +1,6 @@
 import { Link, useLocation } from "react-router-dom"
 import { supabase } from "../utils/supabase"
-import '../styles/NavBar.less'
+import { ReactNode, useState } from "react"
 
 async function logout() {
   const { error } = await supabase.auth.signOut()
@@ -11,21 +11,43 @@ async function logout() {
   }
 }
 
-function NavItem(props: { label: string, route: string }) {
+function NavItem(props: { children: ReactNode, route: string, onClick?: () => void }) {
   const { pathname } = useLocation()
-  return <Link className={`navitem ${pathname === props.route ? 'selected' : ''}`} to={props.route}>{props.label}</Link>
+  return <Link className={`navbar-item ${pathname === props.route ? 'is-active' : ''}`} to={props.route} onClick={props.onClick}>{props.children}</Link>
 }
 
 export function NavBar() {
-  return (
-    <div className="navbar">
-      <div className="navitems">
-        <NavItem label="Channels" route="/channels" />
-        <NavItem label="Clips" route="/clips" />
-        <NavItem label="Overlay" route="/overlay" />
-        <NavItem label="Bot" route="/bot" />
+  const [burgerActive, setBurgerActive] = useState(false)
+  
+  return <>
+    <nav className="navbar" role="navigation" aria-label="main navigation">
+      <div className="navbar-brand">
+        <Link className="navbar-item" to="/">
+          <img src="logo.png" />
+        </Link>
+
+        <a role="button" className={`navbar-burger ${burgerActive ? 'is-active' : ''}`} aria-label="menu" aria-expanded="false" data-target="navbarBasicExample" onClick={() => setBurgerActive(!burgerActive)}>
+          <span aria-hidden="true"></span>
+          <span aria-hidden="true"></span>
+          <span aria-hidden="true"></span>
+          <span aria-hidden="true"></span>
+        </a>
       </div>
-      <img src="logout.png" className="logout" onClick={logout} title="Log out" />
-    </div>
-  )
+
+      <div id="navbarBasicExample" className={`navbar-menu ${burgerActive ? 'is-active' : ''}`}>
+        <div className="navbar-start">
+          <NavItem route="/channels" onClick={() => setBurgerActive(false)}>Channels</NavItem>
+          <NavItem route="/clips" onClick={() => setBurgerActive(false)}>Clips</NavItem>
+          <NavItem route="/overlay" onClick={() => setBurgerActive(false)}>Overlay</NavItem>
+          <NavItem route="/bot" onClick={() => setBurgerActive(false)}>Bot</NavItem>
+        </div>
+
+        <div className="navbar-end">
+          <div className="navbar-item">
+            <img src="logout.png" className="logout" onClick={logout} title="Log out" />
+          </div>
+        </div>
+      </div>
+    </nav>
+  </>
 }
